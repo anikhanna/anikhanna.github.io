@@ -3,53 +3,344 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Me</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Ani Khanna</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #0a0b10;
+            --text: #ecedf2;
+            --muted: #8b90a3;
+            --faint: #5b6072;
+            --line: rgba(255, 255, 255, 0.10);
+            --accent: #7fd1d6;
+            --accent-2: #9b8cff;
+            --mx: 50%;
+            --my: 30%;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: var(--text);
             margin: 0;
-            padding: 0;
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(28px, 6vw, 72px) clamp(22px, 6vw, 64px);
+            padding-left: max(clamp(22px, 6vw, 64px), env(safe-area-inset-left));
+            padding-right: max(clamp(22px, 6vw, 64px), env(safe-area-inset-right));
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            background:
+                radial-gradient(40vw 40vw at var(--mx) var(--my), rgba(127, 209, 214, 0.10), transparent 60%),
+                radial-gradient(900px 600px at 12% -10%, rgba(155, 140, 255, 0.12), transparent 60%),
+                radial-gradient(800px 600px at 100% 110%, rgba(127, 209, 214, 0.09), transparent 55%);
+            transition: background-position 0.2s ease;
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            opacity: 0.04;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
+        .wrap { width: 100%; max-width: 1040px; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(12px);
+            animation: rise 0.8s cubic-bezier(0.21, 1, 0.32, 1) forwards;
+        }
+        .reveal:nth-child(1) { animation-delay: 0.05s; }
+        .reveal:nth-child(2) { animation-delay: 0.15s; }
+        .reveal:nth-child(3) { animation-delay: 0.25s; }
+        @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+        /* header spans full width */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: clamp(16px, 3vw, 24px);
+            margin-bottom: clamp(34px, 6vw, 56px);
+        }
+        .avatar {
+            position: relative;
+            width: clamp(76px, 12vw, 104px);
+            height: clamp(76px, 12vw, 104px);
+            border-radius: 50%;
+            flex-shrink: 0;
+            border: 1px solid var(--line);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--accent-2), var(--accent));
+        }
+        .avatar .initials {
+            font-weight: 600;
+            font-size: clamp(26px, 5vw, 36px);
+            color: #0a0b10;
+            letter-spacing: 0.02em;
+        }
+        .avatar img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         h1 {
-            text-align: center;
-            color: #333;
+            margin: 0;
+            font-size: clamp(30px, 6vw, 46px);
+            font-weight: 600;
+            letter-spacing: -0.015em;
+            line-height: 1.04;
+            color: #fff;
+        }
+        .role {
+            margin: 10px 0 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(12px, 2.2vw, 14px);
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+        .role .dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            flex-shrink: 0;
+        }
+
+        /* two-column body */
+        .grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: clamp(40px, 6vw, 80px);
+            align-items: start;
         }
 
         p {
-            font-size: 18px;
-            line-height: 1.6;
-            color: #666;
+            font-size: clamp(15.5px, 1.6vw, 17px);
+            line-height: 1.8;
+            color: #c9ccdb;
+            margin: 0 0 22px;
+        }
+        p.lead {
+            font-size: clamp(20px, 2.6vw, 27px);
+            line-height: 1.5;
+            color: #f1f2f7;
+            margin-bottom: clamp(22px, 3vw, 30px);
         }
 
-        img.profile-pic {
-            max-width: 200px;
-            display: block;
-            margin: 20px auto;
-            border-radius: 50%;
+        .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--faint);
+            margin: 0 0 16px;
+        }
+
+        .chips { display: flex; flex-wrap: wrap; gap: 9px; margin: 0; }
+        .chip {
+            font-size: 14px;
+            color: #d3d6e4;
+            padding: 8px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.02);
+            transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+            cursor: default;
+        }
+        .chip:hover, .chip:active {
+            color: #fff;
+            border-color: rgba(127, 209, 214, 0.5);
+            background: rgba(127, 209, 214, 0.07);
+        }
+
+        /* side column */
+        .side .label { margin-bottom: 18px; }
+        .hobbies {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin: 0 0 30px;
+        }
+        .hobby {
+            display: inline-flex;
+            align-items: center;
+            gap: 13px;
+            font-size: 15px;
+            color: var(--muted);
+            transition: color 0.25s ease;
+        }
+        .hobby svg {
+            width: 20px; height: 20px;
+            stroke: var(--faint);
+            flex-shrink: 0;
+            transition: stroke 0.25s ease, transform 0.25s ease;
+        }
+        .hobby:hover { color: var(--text); }
+        .hobby:hover svg { stroke: var(--accent); transform: translateX(2px); }
+
+        .divider {
+            height: 1px; border: 0;
+            margin: 30px 0 22px;
+            background: linear-gradient(90deg, var(--line), transparent);
+        }
+        .contact { font-size: 15px; line-height: 1.6; color: var(--muted); margin: 0 0 16px; }
+
+        .links { display: flex; flex-wrap: wrap; gap: 10px; }
+        .links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 14px;
+            color: var(--text);
+            text-decoration: none;
+            padding: 9px 15px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.02);
+            transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+        }
+        .links a svg {
+            width: 17px; height: 17px;
+            color: var(--faint);
+            transition: color 0.25s ease;
+        }
+        .links a:hover {
+            color: #fff;
+            border-color: rgba(127, 209, 214, 0.5);
+            background: rgba(127, 209, 214, 0.07);
+        }
+        .links a:hover svg { color: var(--accent); }
+
+        /* stack to single column on tablet/mobile */
+        @media (max-width: 760px) {
+            .grid { grid-template-columns: 1fr; gap: clamp(30px, 7vw, 44px); }
+            .chips { margin-bottom: 4px; }
+        }
+        @media (max-width: 440px) {
+            .header { flex-direction: column; align-items: flex-start; gap: 16px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { animation: none; opacity: 1; transform: none; }
+            .hobby:hover svg { transform: none; }
+            body::before { transition: none; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://media.licdn.com/dms/image/C5603AQGw72j7rRf04w/profile-displayphoto-shrink_800_800/0/1590727826456?e=1704326400&v=beta&t=giLThk8nNCnnVV_vmNo9gKTNwJna1PkX8AIf_OkfdLM" alt="Your Name" class="profile-pic">
-        <h1>About Ani Khanna</h1>
-        <p>
-            Hello! My name is Aniruddha Khanna. I'm from San Jose, CA, and I've been a software developer/ manager for 21 years. In my free time, I enjoy writing code, playing guitar and go hiking. 
-        </p>
-        <p>
-            Feel free to reach out if you'd like to collaborate or just chat!
-        </p>
-    </div>
+    <main class="wrap">
+        <header class="header reveal">
+            <div class="avatar">
+                <span class="initials">AK</span>
+                <img src="profile.jpg" alt="Ani Khanna" onerror="this.remove()">
+            </div>
+            <div>
+                <h1>Ani Khanna</h1>
+                <p class="role"><span class="dot"></span>Eng leader &times; vibe coder</p>
+            </div>
+        </header>
+
+        <div class="grid">
+            <section class="main reveal">
+                <p class="lead">
+                    I build software, lead engineering teams, and spend too much time experimenting with new tools and ideas.
+                </p>
+                <p>
+                    Over the past two decades, I've worked across product engineering, distributed systems, developer platforms, and AI-assisted workflows.
+                </p>
+                <p class="label">Focus areas</p>
+                <div class="chips">
+                    <span class="chip">Ad serving platforms</span>
+                    <span class="chip">Tracking &amp; attribution</span>
+                    <span class="chip">Native ads</span>
+                    <span class="chip">Leading global teams</span>
+                    <span class="chip">AI-powered developer tools</span>
+                    <span class="chip">Automation &amp; workflows</span>
+                    <span class="chip">Scalable backend systems</span>
+                    <span class="chip">Product-minded engineering</span>
+                </div>
+            </section>
+
+            <aside class="side reveal">
+                <p class="label">Off the clock</p>
+                <div class="hobbies">
+                    <span class="hobby">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17V4l10-1.5V14"/><circle cx="6" cy="17" r="3"/><circle cx="16" cy="14" r="3"/></svg>
+                        Playing guitar
+                    </span>
+                    <span class="hobby">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="m3 20 6-11 4 6.5L15.5 11 21 20"/></svg>
+                        Hiking trails
+                    </span>
+                    <span class="hobby">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="11" cy="9" rx="6.5" ry="7"/><path d="M11 16.5V21M8.5 21h5"/></svg>
+                        Pickleball
+                    </span>
+                    <span class="hobby">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2-2h1.6l1.2-1.8a1 1 0 0 1 .83-.45h6.74a1 1 0 0 1 .83.45L17.4 7H19a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.3"/></svg>
+                        Photography
+                    </span>
+                    <span class="hobby">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3M8.5 21h7"/></svg>
+                        Live concerts
+                    </span>
+                    <span class="hobby">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m8 8-4 4 4 4"/><path d="m16 8 4 4-4 4"/><path d="m13.5 6-3 12"/></svg>
+                        Side projects
+                    </span>
+                    <span class="hobby">
+                        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-6.5-4-9-8.2C1.2 8.6 2.7 5.5 6 5.5c2 0 3.2 1.2 4 2.6.8-1.4 2-2.6 4-2.6 3.3 0 4.8 3.1 3 6.3C18.5 16 12 20 12 20z"/></svg>
+                        Family time
+                    </span>
+                </div>
+                <hr class="divider">
+                <p class="contact">
+                    Always happy to connect with curious builders.
+                </p>
+                <div class="links">
+                    <a href="https://www.linkedin.com/in/anikhanna" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM0 8h5v16H0V8zm7.5 0H12v2.2h.07c.63-1.2 2.17-2.46 4.46-2.46 4.77 0 5.65 3.14 5.65 7.22V24h-5v-7.3c0-1.74-.03-3.98-2.43-3.98-2.43 0-2.8 1.9-2.8 3.86V24h-5V8z"/></svg>
+                        LinkedIn
+                    </a>
+                    <a href="https://github.com/anikhanna/" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.34-5.47-5.96 0-1.32.47-2.39 1.24-3.23-.13-.3-.54-1.53.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6.01 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.65.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.23 0 4.63-2.81 5.65-5.49 5.95.43.37.82 1.1.82 2.22 0 1.61-.02 2.9-.02 3.29 0 .32.22.7.83.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z"/></svg>
+                        GitHub
+                    </a>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script>
+        if (window.matchMedia('(pointer:fine)').matches) {
+            window.addEventListener('pointermove', (e) => {
+                document.documentElement.style.setProperty('--mx', (e.clientX / window.innerWidth  * 100) + '%');
+                document.documentElement.style.setProperty('--my', (e.clientY / window.innerHeight * 100) + '%');
+            });
+        }
+    </script>
 </body>
 </html>
